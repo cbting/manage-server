@@ -1,0 +1,8 @@
+[2023-08-31T10:55:25.459] [ERROR] error - ReferenceError: ctx is not defined
+    at /Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/app.js:29:3
+    at dispatch (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-compose/index.js:42:32)
+    at views (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-views/src/index.js:91:12)
+    at dispatch (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-compose/index.js:42:32)
+    at serve (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-static/index.js:53:15)
+    at async logger (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-logger/index.js:67:7)
+    at async bodyParser (/Users/chenbingting/Desktop/leetcode/项目-全栈开发后台系统-笔记/manager-server/node_modules/koa-bodyparser/index.js:78:5)
