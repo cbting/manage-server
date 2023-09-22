@@ -8,14 +8,18 @@ const logger = require('koa-logger')
 const log4js = require('./utils/log4j')
 const users = require('./routes/users')
 const router = require('koa-router')()
+const jwt = require('jsonwebtoken')
+const koajwt = require('koa-jwt')
+const util = require('./utils/util')
 // error handler
 onerror(app)
 
 require('./config/db')
 
-// middlewares
+// middlewares 中间件 两个参数（ctx, next）通过中间件来进行串写，通过next来执行下一个
+// 中间件的优先级 大于 接口；通过这种过滤，把非法的数据过滤在外面
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes:['json', 'form', 't ext']
 }))
 app.use(json())
 app.use(logger())
@@ -34,8 +38,23 @@ app.use(views(__dirname + '/views', {
 app.use(async (ctx, next) => {
   log4js.info(`get params:${JSON.stringify(ctx.request.query)}`)
   log4js.info(`post params:${JSON.stringify(ctx.request.body)}`)
-  await next()
+  await next().catch((err)=>{
+    if(err.status == '401'){
+      ctx.status = 200
+      ctx.body = util.fail('Token认证失败',util.CODE.AUTH_ERROR)
+    }
+    else{
+      throw err;
+    }
+  })
 })
+
+//提前加载中间件koa-jwt
+//会去校验jwt的token
+app.use(koajwt({secret:'imooc'}).unless({
+  path:[/^\/api\/users\/login/]
+})) //unless 首次登录的时候不校验
+
 
 // 默认根路由
 // router.get('/', async (ctx, next) => {
@@ -43,6 +62,12 @@ app.use(async (ctx, next) => {
 // });
 
 router.prefix('/api')
+
+router.get('/leave/count',(ctx)=>{
+  const token = ctx.request.headers.authorization.split(' ')[1]
+  const payload = jwt.verify(token,'imooc')
+  ctx.body = payload
+})
 router.use(users.routes(), users.allowedMethods())
 
 app.use(router.routes(), router.allowedMethods())
