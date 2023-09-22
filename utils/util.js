@@ -33,7 +33,7 @@ module.exports = {
     log4js.debug(data)
     return {
       code,
-      data,
+      data, 
       msg
     }
   },

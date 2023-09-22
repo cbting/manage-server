@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "log4js": "^6.9.1",
+    "mongoose": "^7.5.0",
     "nodemon": "^1.19.1"
   }
 }
